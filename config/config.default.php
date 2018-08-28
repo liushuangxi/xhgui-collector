@@ -1,57 +1,28 @@
 <?php
-/**
- * Default configuration for Xhgui
- */
 
-$mongoUri = getenv('XHGUI_MONGO_URI') ?: '127.0.0.1:27017';
-$mongoUri = str_replace('mongodb://', '', $mongoUri);
-$mongoDb = getenv('XHGUI_MONGO_DB') ?: 'xhprof';
+return [
+    'debug'               => false,
+    'mode'                => 'product',
 
-return array(
-    'debug' => false,
-    'mode' => 'development',
+    # 连接信息
+    'save.handler'        => 'mongodb',
+    'db.host'             => 'mongodb://127.0.0.1:27017',
+    'db.db'               => 'xhprof',
+    'db.options'          => [
+        'socketTimeoutMS'          => 1000,
+        'connectTimeoutMS'         => 1000,
+        'serverSelectionTimeoutMS' => 1000,
+    ],
 
-    // Can be mongodb, file or upload.
-
-    // For file
-    //
-    //'save.handler' => 'file',
-    //'save.handler.filename' => dirname(__DIR__) . '/cache/' . 'xhgui.data.' . microtime(true) . '_' . substr(md5($url), 0, 6),
-
-    // For upload
-    //
-    // Saving profile data by upload is only recommended with HTTPS
-    // endpoints that have IP whitelists applied.
-    //
-    // The timeout option is in seconds and defaults to 3 if unspecified.
-    //
-    //'save.handler' => 'upload',
-    //'save.handler.upload.uri' => 'https://example.com/run/import',
-    //'save.handler.upload.timeout' => 3,
-
-    // For MongoDB
-    'save.handler' => 'mongodb',
-    'db.host' => sprintf('mongodb://%s', $mongoUri),
-    'db.db' => $mongoDb,
-
-    // Allows you to pass additional options like replicaSet to MongoClient.
-    // 'username', 'password' and 'db' (where the user is added)
-    'db.options' => array(),
-    'templates.path' => dirname(__DIR__) . '/src/templates',
-    'date.format' => 'M jS H:i:s',
-    'detail.count' => 6,
-    'page.limit' => 25,
-
-    // Profile x in 100 requests. (E.g. set XHGUI_PROFLING_RATIO=50 to profile 50% of requests)
-    // You can return true to profile every request.
-    'profiler.enable' => function() {
-        $ratio = getenv('XHGUI_PROFILING_RATIO') ?: 100;
-        return (getenv('XHGUI_PROFILING') !== false) && (mt_rand(1, 100) <= $ratio);
+    # 采样规则 true/false
+    'profiler.enable'     => function () {
+        return rand(1, 3) == 1;
     },
 
-    'profiler.simple_url' => function($url) {
-        return preg_replace('/\=\d+/', '', $url);
+    # 基础路径，用于同类对比
+    'profiler.simple_url' => function ($url) {
+        return preg_replace('/\=\w+/', '', $url);
     },
 
-    'profiler.options' => array(),
-);
+    'profiler.options' => [],
+];
