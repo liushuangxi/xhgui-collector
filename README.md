@@ -20,10 +20,11 @@ $ mongo
 > db.results.ensureIndex( { 'meta.simple_url' : 1 } )
 </pre>
 ## 使用
+### 安装
 <pre>
 composer require liushuangxi/xhgui-collector -vvv
 </pre>
-### [配置文件](https://github.com/liushuangxi/xhgui-collector/blob/master/config/config.default.php)
+### [配置](https://github.com/liushuangxi/xhgui-collector/blob/master/config/config.default.php)
 ### 调用
 <pre>
 
@@ -35,7 +36,7 @@ $logger = new class()
 {
     public function logInfo($message)
     {
-        echo $message;
+        echo $message . "\n";
     }
 };
 
