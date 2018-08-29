@@ -1,6 +1,7 @@
 {
   "name": "liushuangxi/xhgui-collector",
   "description": "Library for collecting and storing XHProf results for later use by XHGUI.",
+  "type": "library",
   "authors": [
     {
       "name": "liushuangxi",
