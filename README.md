@@ -20,18 +20,18 @@ $ mongo
 > db.results.ensureIndex( { 'meta.simple_url' : 1 } )
 </pre>
 ## 使用
-### 安装
+### 代码安装
 <pre>
 composer require liushuangxi/xhgui-collector -vvv
 </pre>
-### [配置](https://github.com/liushuangxi/xhgui-collector/blob/master/config/config.default.php)
-### 调用
+### [配置文件](https://github.com/liushuangxi/xhgui-collector/blob/master/config/config.default.php)
+### PHP调用
+collector.php
 <pre>
-
 use Liushuangxi\Xhgui\Collector;
-
+ 
 $configFile = "/path/to/config.php";
-
+ 
 $logger = new class()
 {
     public function logInfo($message)
@@ -39,6 +39,16 @@ $logger = new class()
         echo $message . "\n";
     }
 };
-
+ 
 Collector::run($configFile, $logger);
+</pre>
+### NGINX调用
+<pre>
+nginx web.conf
+ 
+server {
+   ......
+    fastcgi_param PHP_VALUE "auto_prepend_file=/path/to/collector.php";
+   ......
+}
 </pre>
