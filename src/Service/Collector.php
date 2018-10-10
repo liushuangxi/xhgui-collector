@@ -38,7 +38,9 @@ class Collector
 
             ## 检查是否采样
             if (\Xhgui_Config::shouldRun()) {
-                self::loadExtension();
+                if (!self::loadExtension()) {
+                    return false;		
+                }
                 self::registerShutdown();
 
                 return true;
